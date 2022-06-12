@@ -69,8 +69,10 @@ export const getAllObjectKeys = (obj) => {
                 arr.push(key);
             }
         }
-        let objArr = new Set(arr);
-        return [...objArr];
+        const objInArr = new Set(arr);
+        const arrInObj = [...objInArr]
+
+        return arrInObj;
 
     }
     return nameToArr(obj);
