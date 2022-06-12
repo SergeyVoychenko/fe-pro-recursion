@@ -63,7 +63,7 @@ export const getAllObjectKeys = (obj) => {
         for (let key in obj) {
             arr.push(key);
             if ((typeof obj[key]) == 'object') {
-                arr.concat(nameToArr([], obj[key]));
+                arr.concat(nameToArr(arr, obj[key]));
             }
             else {
                 arr.push(key);
@@ -75,26 +75,26 @@ export const getAllObjectKeys = (obj) => {
     return [... new Set(nameToArr([], obj))];
 };
 
-const obj = {
-    notBla: 'test',
-    name: 'bohdam',
-    obj: { bla: { notBla: 'test' } },
-};
-// -----------------------------
+// const obj = {
+//     notBla: 'test',
+//     name: 'bohdam',
+//     obj: { bla: { notBla: 'test' } },
+// };
+// // -----------------------------
 
-let q = deepCopy3([], obj);
-console.log(q);
+// let q = deepCopy3([], obj);
+// console.log(q);
 
-function deepCopy3(arr, obj) {
-    for (let key in obj) {
-        arr.push(key);
-        if ((typeof obj[key]) == 'object') {
-            arr.concat(deepCopy3([], obj[key]));
-        }
-        else {
-            arr.push(key);
-        }
-    }
-    return [... new Set(arr)];
+// function deepCopy3(arr, obj) {
+//     for (let key in obj) {
+//         arr.push(key);
+//         if ((typeof obj[key]) == 'object') {
+//             arr.concat(deepCopy3(arr, obj[key]));
+//         }
+//         else {
+//             arr.push(key);
+//         }
+//     }
+//     return [... new Set(arr)];
 
-}
+// }
