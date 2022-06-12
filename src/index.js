@@ -59,11 +59,11 @@ export const deepCopy = (obj) => {
  * То есть если у нас объект { name: { bohdan: { name: 'test' } } } вернет ['name', 'bohdan']
  */
 export const getAllObjectKeys = (obj) => {
-    function nameToArr(arr, obj) {
+    function nameToArr(arr = [], obj) {
         for (let key in obj) {
             arr.push(key);
             if ((typeof obj[key]) == 'object') {
-                arr.concat(nameToArr(arr, obj[key]));
+                arr.concat(nameToArr([], obj[key]));
             }
             else {
                 arr.push(key);
