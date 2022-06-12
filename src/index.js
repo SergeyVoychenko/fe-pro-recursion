@@ -59,7 +59,7 @@ export const deepCopy = (obj) => {
  * То есть если у нас объект { name: { bohdan: { name: 'test' } } } вернет ['name', 'bohdan']
  */
 export const getAllObjectKeys = (obj) => {
-    function nameToArr(arr = [], obj) {
+    function nameToArr(arr, obj) {
         for (let key in obj) {
             arr.push(key);
             if ((typeof obj[key]) == 'object') {
@@ -72,30 +72,29 @@ export const getAllObjectKeys = (obj) => {
         return arr;
     }
 
-    return [... new Set(nameToArr(arr, obj))];
+    return [... new Set(nameToArr([], obj))];
 };
 
-// const obj = {
-//     notBla: 'test',
-//     name: 'bohdam',
-//     obj: { bla: { notBla: 'test' } },
-// };
-// // -----------------------------
+const obj = {
+    notBla: 'test',
+    name: 'bohdam',
+    obj: { bla: { notBla: 'test' } },
+};
+// -----------------------------
 
-// let q = deepCopy3([], obj);
-// console.log(q);
+let q = deepCopy3([], obj);
+console.log(q);
 
-// function deepCopy3(arr, obj) {
-//     for (let key in obj) {
-//         arr.push(key);
-//         if ((typeof obj[key]) == 'object') {
-//             arr.concat(deepCopy3(arr, obj[key]));
-//         }
-//         else {
-//             arr.push(key);
-//         }
-//     }
-//     // arr = new Set(arr);
-//     return [... new Set(arr)];
+function deepCopy3(arr, obj) {
+    for (let key in obj) {
+        arr.push(key);
+        if ((typeof obj[key]) == 'object') {
+            arr.concat(deepCopy3([], obj[key]));
+        }
+        else {
+            arr.push(key);
+        }
+    }
+    return [... new Set(arr)];
 
-// }
+}
