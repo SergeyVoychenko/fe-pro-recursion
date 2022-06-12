@@ -38,7 +38,21 @@ export const deepEqual = (obj, anotherObject) => {
  * то тогда в рекурсию. С объектом также. Поскольку массив при typeof возвращает object, чтобы
  * их различить берем метод Array.isArray и он на массивах вернет тру
  */
-export const deepCopy = (obj) => { };
+export const deepCopy = (obj) => { 
+    function deepCopy2(dest, obj) {
+        for (let key in obj) {
+            if (Array.isArray(obj[key])) dest[key] = [...obj[key]];
+            if ((typeof obj[key]) == "object" && !Array.isArray(obj[key])) {
+                dest[key] = deepCopy2({}, obj[key]);
+            }
+            else {
+                dest[key] = obj[key];
+            }
+        }
+        return dest;
+    }
+    return deepCopy2({}, obj);
+};
 
 /**
  * Мы передаем объект, и должны вернуть массив уникальных названий свойств
@@ -49,18 +63,36 @@ export const getAllObjectKeys = (obj) => { };
 
 
 // 
-
-const obj = {
-    name: 'test',
-    prop: { obj: { name: 'bohdan', arr: [1, 2, 3] } },
-};
-const nextObj = {
-    name: 'test',
-    prop: { obj: { name: 'bohdan', arr: [1, 2, 3] } },
-};
+// const obj2 = { prop: 'bohdan', obj: { arr: 1 } };
+// const obj1 = {
+//     name: 'test',
+//     prop: { obj: { name: 'bohdan', arr: [1, 2, 3, [4, 5, obj2]], iss: true } },
+// };
 // -----------------------------
 
 
+// function deepCopy2(dest, obj) {
+//     for (let key in obj) {
+//         if (Array.isArray(obj[key])) dest[key] = [...obj[key]];
+//         if ((typeof obj[key]) == "object" && !Array.isArray(obj[key])) {
+//             dest[key] = deepCopy2({}, obj[key]);
+//         }
+//         else {
+//             dest[key] = obj[key];
+//         }
+//     }
+//     return dest;
+// }
+// let q = deepCopy2({}, obj1);
+// console.log(q);
+// console.log(obj1);
+
+
+
+
+
+
+// -----------------------------
 // let arrs1 = ToArray(obj);
 // let arrs2 = ToArray(nextObj);
 // function ToArray(objects) {
