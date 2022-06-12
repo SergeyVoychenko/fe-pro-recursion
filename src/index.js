@@ -38,7 +38,7 @@ export const deepEqual = (obj, anotherObject) => {
  * то тогда в рекурсию. С объектом также. Поскольку массив при typeof возвращает object, чтобы
  * их различить берем метод Array.isArray и он на массивах вернет тру
  */
-export const deepCopy = (obj) => { 
+export const deepCopy = (obj) => {
     function deepCopy2(dest, obj) {
         for (let key in obj) {
             if (Array.isArray(obj[key])) dest[key] = [...obj[key]];
@@ -58,62 +58,45 @@ export const deepCopy = (obj) => {
  * Мы передаем объект, и должны вернуть массив уникальных названий свойств
  * То есть если у нас объект { name: { bohdan: { name: 'test' } } } вернет ['name', 'bohdan']
  */
-export const getAllObjectKeys = (obj) => { };
+export const getAllObjectKeys = (obj) => {
+    function nameToArr(arr, obj) {
+        for (let key in obj) {
+            arr.push(key);
+            if ((typeof obj[key]) == 'object') {
+                arr.concat(nameToArr(arr, obj[key]));
+            }
+            else {
+                arr.push(key);
+            }
+        }
+        arr = new Set(arr);
+        return [...arr];
 
+    }
+    return nameToArr(obj);
+};
 
-
-// 
 // const obj2 = { prop: 'bohdan', obj: { arr: 1 } };
 // const obj1 = {
 //     name: 'test',
-//     prop: { obj: { name: 'bohdan', arr: [1, 2, 3, [4, 5, obj2]], iss: true } },
+//     prop: { obj: { name: 'bohdan', arr: [1, 2, 3], iss: true } },
 // };
 // -----------------------------
 
+// let q = deepCopy3([], obj1);
+// console.log(q);
 
-// function deepCopy2(dest, obj) {
+// function deepCopy3(arr, obj) {
 //     for (let key in obj) {
-//         if (Array.isArray(obj[key])) dest[key] = [...obj[key]];
-//         if ((typeof obj[key]) == "object" && !Array.isArray(obj[key])) {
-//             dest[key] = deepCopy2({}, obj[key]);
+//         arr.push(key);
+//         if ((typeof obj[key]) == 'object') {
+//             arr.concat(deepCopy3(arr, obj[key]));
 //         }
 //         else {
-//             dest[key] = obj[key];
+//             arr.push(key);
 //         }
 //     }
-//     return dest;
+//     arr = new Set(arr);
+//     return [...arr];
+
 // }
-// let q = deepCopy2({}, obj1);
-// console.log(q);
-// console.log(obj1);
-
-
-
-
-
-
-// -----------------------------
-// let arrs1 = ToArray(obj);
-// let arrs2 = ToArray(nextObj);
-// function ToArray(objects) {
-//     const arrs = [];
-//     const fun = (object) => {
-//         for (let key in object) {
-//             arrs.push(key);
-//             if (typeof object[key] === 'object') {
-//                 fun(object[key]);
-//             } else {
-//                 arrs.push(object[key]);
-//             }
-//         }
-//         return arrs;
-//     }
-//     fun(objects);
-//     return arrs;
-// }
-// for (let i = 0; i < arrs1.length; i++) {
-//     if (arrs1[i] !== arrs2[i]) {
-//         return false;
-//     };
-// }
-// typeof object === 'object' && !Array.isArray(object)
