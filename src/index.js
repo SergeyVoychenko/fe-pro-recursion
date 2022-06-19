@@ -4,27 +4,21 @@
  * делаем через рекурсию(а других вариантов и нет)
  */
 export const deepEqual = (obj, anotherObject) => {
-    let arrs1 = ToArray(obj);
-    let arrs2 = ToArray(anotherObject);
-
-    function ToArray(objects) {
-        const arrs = [];
-        const fun = (object) => {
-            for (let key in object) {
-                arrs.push(key);
-                if (typeof object[key] === 'object') {
-                    fun(object[key]);
-                } else {
-                    arrs.push(object[key]);
-                }
+    let arr1 = ToArray([], obj);
+    let arr2 = ToArray([], anotherObject);
+    function ToArray(arr, obj) {
+        for (let key in obj) {
+            arr.push(key);
+            if (typeof obj[key] === 'object') {
+                ToArray(arr, obj[key]);
+            } else {
+                arr.push(obj[key]);
             }
-            return arrs;
         }
-        fun(objects);
-        return arrs;
+        return arr;
     }
-    for (let i = 0; i < arrs1.length; i++) {
-        if (arrs1[i] !== arrs2[i]) {
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
             return false;
         }
     }
@@ -42,7 +36,7 @@ export const deepCopy = (obj) => {
     function deepCopy2(dest, obj) {
         for (let key in obj) {
             if (Array.isArray(obj[key])) dest[key] = [...obj[key]];
-            if ((typeof obj[key]) == "object" && !Array.isArray(obj[key])) {
+            if ((typeof obj[key]) === "object" && !Array.isArray(obj[key])) {
                 dest[key] = deepCopy2({}, obj[key]);
             }
             else {
@@ -62,7 +56,7 @@ export const getAllObjectKeys = (obj) => {
     function nameToArr(arr, obj) {
         for (let key in obj) {
             arr.push(key);
-            if ((typeof obj[key]) == 'object') {
+            if ((typeof obj[key]) === 'object') {
                 arr.concat(nameToArr(arr, obj[key]));
             }
             else {
@@ -75,26 +69,3 @@ export const getAllObjectKeys = (obj) => {
     return [... new Set(nameToArr([], obj))];
 };
 
-// const obj = {
-//     notBla: 'test',
-//     name: 'bohdam',
-//     obj: { bla: { notBla: 'test' } },
-// };
-// // -----------------------------
-
-// let q = deepCopy3([], obj);
-// console.log(q);
-
-// function deepCopy3(arr, obj) {
-//     for (let key in obj) {
-//         arr.push(key);
-//         if ((typeof obj[key]) == 'object') {
-//             arr.concat(deepCopy3(arr, obj[key]));
-//         }
-//         else {
-//             arr.push(key);
-//         }
-//     }
-//     return [... new Set(arr)];
-
-// }
